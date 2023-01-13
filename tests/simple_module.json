@@ -1,0 +1,5 @@
+{
+    "name" : "simple",
+    "brief" : "A simple module description.",
+    "details" : "This example contains only the module description text.\nAll other elements are set to default."
+}
