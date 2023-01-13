@@ -1,9 +1,10 @@
 use std::error::Error;
 use clap::{arg, command, Command};
 
-use crate::generator::Generator;
+use crate::module_generator::ModuleGenerator;
 
-mod generator;
+mod module_generator;
+mod module_description;
 
 fn cli() -> Command {
     command!()
@@ -19,9 +20,8 @@ fn cli() -> Command {
 fn main() -> Result< (), Box< dyn Error > >{
     let matches = cli().get_matches();
     let input = matches.get_one::< String >( "input" ).expect( "required" );
-    let mut generator : Generator = Generator::new( & input );
-
-    let generator : Generator = match generator.parse() {
+    let mut generator = ModuleGenerator::new();
+    let generator : ModuleGenerator = match generator.parse( & input ) {
         Ok(()) => generator,
         Err( error )  => {
             println!( "{:?}", error );
