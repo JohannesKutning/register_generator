@@ -1,0 +1,205 @@
+{
+    "$schema"     : "http://json-schema.org/schema#",
+    "title"       : "reggen-register description",
+    "description" : "Schema for a reggen register description.",
+
+
+    "definitions" :
+    {
+        "Value" :
+        {
+            "type"        : "object",
+            "description" : "A register description",
+            "properties"  :
+            {
+                "name" :
+                {
+                    "description" : "Register identifer",
+                    "type"        : "string"
+                },
+                "brief" :
+                {
+                    "description" : "A brief register description.",
+                    "type"        : "string"
+                },
+                "details" :
+                {
+                    "description" : "A detailed register description.",
+                    "type"        : "string"
+                },
+                "oneOf" :
+                {
+                    "value" :
+                    {
+                        "description" : "Single value description.",
+                        "type"        : "integer"
+                    },
+                    "values" :
+                    {
+                        "description" : "Multiple value description.",
+                        "type"        : "array",
+                        "items"       : { "type" : "integer" }
+                    }
+                }
+            },
+            "required" : [ "name" ]
+        },
+        "Field" :
+        {
+            "type"        : "object",
+            "description" : "A register description",
+            "properties"  :
+            {
+                "name" :
+                {
+                    "description" : "Register identifer",
+                    "type"        : "string"
+                },
+                "brief" :
+                {
+                    "description" : "A brief register description.",
+                    "type"        : "string"
+                },
+                "details" :
+                {
+                    "description" : "A detailed register description.",
+                    "type"        : "string"
+                },
+                "oneOf" :
+                [
+                    {
+                        "size" :
+                        {
+                            "description" : "Size of the field in bit.",
+                            "type"        : "int"
+                        }
+                    },
+                    {
+                        "range" :
+                        {
+                            "description" : "Bit range of the register field.",
+                            "type"        : "array",
+                            "minItems"    : 2,
+                            "maxItems"    : 2,
+                            "items"       : { "type" : "integer" }
+                        }
+                    }
+                ],
+                "values" :
+                {
+                    "description" : "Array of field values.",
+                    "type"        : "array",
+                    "items":
+                    {
+                        "type": { "$ref" : "#/definitions/Value" }
+                    }
+                }
+            },
+            "required" : [ "name", "brief" ]
+        },
+        "Register" :
+        {
+            "type"        : "object",
+            "description" : "A register description",
+            "properties"  :
+            {
+                "brief" :
+                {
+                    "description" : "A brief register description.",
+                    "type"        : "string"
+                },
+                "details" :
+                {
+                    "description" : "A detailed register description.",
+                    "type"        : "string"
+                },
+                "name" :
+                {
+                    "description" : "Register identifer",
+                    "type"        : "string"
+                },
+                "offset" :
+                {
+                    "description" : "Register address offset",
+                    "type"        : "string"
+                },
+                "size" :
+                {
+                    "description" : "Size of the register in bit. This will overwrite the modules register_size.",
+                    "type"        : "integer",
+                    "minimum"     : 1
+
+                },
+                "fields" :
+                {
+                    "description" : "Array of register fields.",
+                    "type"        : "array",
+                    "items":
+                    {
+                        "oneOf":
+                        [
+                            { "$ref" : "#/definitions/Field" }
+                        ]
+                    }
+                }
+            },
+            "required" : [ "name", "brief" ]
+        }
+    },
+    "type"        : "object",
+    "properties"  :
+    {
+        "brief" :
+        {
+            "description" : "A brief module description.",
+            "type"        : "string"
+        },
+        "details" :
+        {
+            "description" : "A detailed module description.",
+            "type"        : "string"
+        },
+        "name" :
+        {
+            "description" : "Module",
+            "type"        : "string"
+        },
+        "offset" :
+        {
+            "description" : "Module offset added to the register offsets.",
+            "type"        : "integer",
+            "minimum"     : 0,
+            "default"     : 0
+        },
+        "alignment" :
+        {
+            "description" : "Default register alignment in byte.",
+            "type"        : "integer",
+            "minimum"     : 1,
+            "default"     : 4
+
+        },
+        "register_size" :
+        {
+            "description" : "Default register size in byte.",
+            "type"        : "integer",
+            "minimum"     : 1,
+            "default"     : 4
+
+        },
+        "registers" :
+        {
+            "description" : "Array of register descriptions.",
+            "type"        : "array",
+            "items":
+            {
+                "oneOf":
+                [
+                    { "$ref" : "#/definitions/Register" }
+                ]
+            }
+        }
+    },
+	"required" : [ "name", "brief", "registers" ]
+}
+
