@@ -1,11 +1,16 @@
+use serde_derive::Deserialize;
+//use self::field::Field;
 
-#[derive(Debug)]
+#[derive(Deserialize, Debug)]
 pub struct RegisterDescription {
-    name        : String,
-    brief       : String,
-    details     : String,
-    offset      : u64,
-    size        : u64,
-    fields      : Vec< Field >,
+    pub name : String,
+    pub brief : String,
+    #[serde(default)]
+    pub details : String,
+    #[serde(default)]
+    pub offset : u64,
+    #[serde(default)]
+    pub size : u64,
+//    fields      : Vec< Field >,
 }
 

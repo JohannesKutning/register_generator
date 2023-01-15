@@ -2,5 +2,8 @@
     "name" : "avalon",
     "brief" : "A simple module description with avalon bus interface.",
     "details" : "A register module connected to a 32 (4 byte) bit avalon bus slave.",
-    "interface" : "avalon"
+    "interface" : "avalon",
+    "registers" : [
+        { "name" : "reg1", "brief" : "A brief register description" }
+    ]
 }

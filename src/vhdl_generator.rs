@@ -3,6 +3,7 @@ use source_generator::vhdl::vhdl_file::VhdlFile;
 use source_generator::element::Element;
 use source_generator::vhdl::entity::Entity;
 use crate::module_description::ModuleDescription;
+use crate::register_description::RegisterDescription;
 
 pub struct VhdlGenerator {
     sources : Vec< VhdlFile >
@@ -58,7 +59,39 @@ mod tests {
             details : "Detailed simple module description\nwith two lines".to_string(),
             alignment : 4,
             offset : 0,
-            register_size : 4 };
+            register_size : 4,
+            registers : Vec::new() };
+        let mut generator = VhdlGenerator::new();
+        generator.create_source_code( & description )?;
+        let expected = concat!( "-- Brief simple module description\n",
+            "-- Detailed simple module description\n",
+            "-- with two lines\n",
+            "entity test is\n",
+            "begin\n",
+            "end entity test;\n\n" );
+
+        assert_eq!( expected, generator.sources[ 0 ].to_source_code( 0 ) );
+        Ok(())
+    }
+
+    #[test]
+    fn create_module_source_code_with_read_only_register() -> Result< (), Box< dyn Error > > {
+        let register = RegisterDescription {
+            name : "reg1".to_string(),
+            brief : "A brief register description".to_string(),
+            details : "A detailed register description\nwith two lines".to_string(),
+            offset : 0,
+            size : 4,
+        };
+        let registers = vec![ register ];
+        let description = ModuleDescription{ name : "test".to_string(),
+            brief : "Brief simple module description".to_string(),
+            details : "Detailed simple module description\nwith two lines".to_string(),
+            alignment : 4,
+            offset : 0,
+            register_size : 4,
+            registers : registers };
+
         let mut generator = VhdlGenerator::new();
         generator.create_source_code( & description )?;
         let expected = concat!( "-- Brief simple module description\n",

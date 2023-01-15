@@ -5,6 +5,7 @@ use crate::module_generator::ModuleGenerator;
 
 mod module_generator;
 mod module_description;
+mod register_description;
 mod vhdl_generator;
 
 fn cli() -> Command {
@@ -56,3 +57,4 @@ fn main() -> Result< (), Box< dyn Error > >{
 
     Ok(())
 }
+

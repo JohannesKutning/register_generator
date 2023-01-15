@@ -489,9 +489,9 @@ dependencies = [
 
 [[package]]
 name = "source_generator"
-version = "0.0.1"
+version = "0.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd073171f5d9e433cdb095596e2e02f6e27f9306aa7ef11bc28c5bb054e9dffd"
+checksum = "bb2c814809ae3b5549f1f35d74f6113d86da712cb1a32800cc7a2303d5291e6b"
 dependencies = [
  "chrono",
  "itertools",

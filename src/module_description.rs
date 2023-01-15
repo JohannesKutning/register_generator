@@ -3,6 +3,7 @@ use std::fs;
 use std::path::Path;
 use serde_derive::Deserialize;
 use serde_json_schema::Schema;
+use crate::register_description::RegisterDescription;
 
 #[derive(Deserialize, Debug)]
 pub struct ModuleDescription {
@@ -16,13 +17,13 @@ pub struct ModuleDescription {
     pub alignment : u64,
     #[serde(default)]
     pub register_size : u64,
-    // pub registers     : Vec< RegisterDescription >,
+    pub registers     : Vec< RegisterDescription >,
 }
 
 impl ModuleDescription {
     pub fn new() -> ModuleDescription {
         ModuleDescription { name : String::new(), brief : String::new(), details : String::new(),
-                offset : 0, alignment : 0, register_size : 0 }
+                offset : 0, alignment : 0, register_size : 0, registers : Vec::new() }
     }
 
     pub fn with_file( file : & Path ) -> Result< ModuleDescription, Box< dyn Error > > {
