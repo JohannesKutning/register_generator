@@ -5,6 +5,7 @@ use crate::module_generator::ModuleGenerator;
 
 mod module_generator;
 mod module_description;
+mod vhdl_generator;
 
 fn cli() -> Command {
     command!()
