@@ -19,8 +19,8 @@ impl ModuleGenerator {
 
     pub fn generate_and_write_vhdl( & self, dirname : & str ) -> Result< (), Box< dyn Error > > {
         println!( "TODO implement ModuleGenerator::generate_and_write_vhdl {:?}", dirname );
-        let mut generator = VhdlGenerator::new();
-        generator.create_source_code( & self.description )?;
+        let mut generator = VhdlGenerator::new( & self.description );
+        generator.create_source_code()?;
         generator.write_source_files( dirname )?;
         Ok(())
     }
