@@ -2,6 +2,7 @@ use std::error::Error;
 use source_generator::vhdl::vhdl_file::VhdlFile;
 use source_generator::element::Element;
 use source_generator::vhdl::entity::Entity;
+use source_generator::vhdl::architecture::Architecture;
 use crate::module_description::ModuleDescription;
 use crate::register_description::RegisterDescription;
 
@@ -17,6 +18,7 @@ impl<'a> VhdlGenerator<'a> {
 
     pub fn create_source_code( & mut self )
             -> Result< (), Box< dyn Error > > {
+        self.create_register_source_code()?;
         self.create_module_source_code()?;
         Ok(())
     }
@@ -30,8 +32,29 @@ impl<'a> VhdlGenerator<'a> {
         Ok(())
     }
 
-    fn create_module_source_code( & mut self )
-            -> Result< (), Box< dyn Error > > {
+    fn create_register_source_code( & mut self ) -> Result< (), Box< dyn Error > > {
+        let mut file = VhdlFile::new( & self.get_register_entity_name() );
+        file.add_entity( self.create_register_entity() );
+        file.add_architecture( self.create_register_architecture() );
+        self.files.push( file );
+        Ok(())
+    }
+
+    fn create_register_entity( & self ) -> Entity {
+        let entity = Entity::new( & self.get_register_entity_name() );
+        return entity;
+    }
+
+    fn create_register_architecture( & self ) -> Architecture {
+        let architecture = Architecture::new( "rtl", & self.get_register_entity_name() );
+        return architecture;
+    }
+
+    fn get_register_entity_name( & self ) -> String {
+        format!( "{}_registers", self.description.name )
+    }
+
+    fn create_module_source_code( & mut self ) -> Result< (), Box< dyn Error > > {
         let mut file = VhdlFile::new( & self.description.name );
         file.add_entity( self.create_module_entity() );
         self.files.push( file );
@@ -83,7 +106,7 @@ mod tests {
             "begin\n",
             "end entity test;\n\n" );
 
-        assert_eq!( expected, generator.files[ 0 ].to_source_code( 0 ) );
+        assert_eq!( expected, generator.files[ 1 ].to_source_code( 0 ) );
         Ok(())
     }
 
@@ -114,7 +137,7 @@ mod tests {
             "begin\n",
             "end entity test;\n\n" );
 
-        assert_eq!( expected, generator.files[ 0 ].to_source_code( 0 ) );
+        assert_eq!( expected, generator.files[ 1 ].to_source_code( 0 ) );
         Ok(())
     }
 }
